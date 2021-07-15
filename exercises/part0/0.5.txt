@@ -1,0 +1,7 @@
+title FullStack 0.5
+
+User->Browser: User types a note and clicks the save button
+Browser->Server: Browser sends POST request to the server
+Server->Browser: Server returns status code "201 created"\n if the request was successful
+Server->Browser: Server adds the note to the webpage/browser\n but the browser doesn't have to reload itself\n nor request all the other files again either
+Browser->User: The browser shows user the page with an added note

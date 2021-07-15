@@ -1,0 +1,6 @@
+title FullStack 0.6
+
+User->Browser: User opens/types a link to the webpage
+Browser->Server: Browser sends the server a GET request for files \n spa, main.css. spa.js, data.json and favicon.ico
+Server->Browser: Server returns status code "200" and the files\n if the request was successful
+Browser->User: Browser shows user the page with notes

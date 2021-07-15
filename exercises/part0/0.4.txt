@@ -1,0 +1,10 @@
+title FullStack 0.4
+
+User->Browser: User types a note and clicks the save button
+Browser->Server: Browser sends GET requests to get files\n notes, main.js, main.css, favico.ico and data.json
+Server->Browser: Server returns status code "200" and the files\n if loading was successfull
+Browser->Server: Browser sends a POST request to the request URL
+Server->Browser: Server returns status code "302"\n if the request was successful
+Browser->Server: Browser sends a GET request to the location \n directed by "Location" header
+Server->Browser: Server returns the updated files and the \n browser reloads itself
+Browser->User: The browser shows user a new page with the added note
