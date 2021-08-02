@@ -5,14 +5,14 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-
-  /*const handleClick = () => {
-    console.log('click')
-  }*/
+  let all = good + neutral + bad
+  let average = 0
+  let isEmpty = 0
+  
 
   const addGood = () => {
     console.log('added one good review')
-    setGood(good +1)
+    setGood(good+1)
   }
 
   const addNeutral = () => {
@@ -25,24 +25,40 @@ const App = () => {
     setBad(bad +1)
   }
 
-  /*setTimeout(
-    () => setGood(good +1),
-    1000
-  )*/
-  
+  const handleClick = () => {
+    console.log('click')
+  }
+
+  //why doesn't work outside of the function and is one click behind?
+  const calculateAverage = () => {
+    console.log('calcucalting average')
+    all = all +1
+    console.log('all: ',all)
+    average = (good-bad)/(good+bad+neutral)
+    console.log('average: ',average)
+  }
+
+  //need to implement somehow
+  if((good||bad||neutral) === 0){
+    isEmpty = 0
+    console.log('no feedback given, isEmpty: ', isEmpty)
+  } else {
+    isEmpty = 1
+    console.log('feedback has been given, isEmpty: ', isEmpty)
+  }
 
   return (
     <div>
       <h1>give feedback</h1>
 
       <div>
-        <button onClick={addGood}>
+        <button onClick={() => { handleClick(); addGood(); calculateAverage(); }}>
           good
         </button>
-        <button onClick={addNeutral}>
+        <button onClick={() => {handleClick(); addNeutral(); calculateAverage(); }}>
           neutral
         </button>
-        <button onClick={addBad}>
+        <button onClick={() => {handleClick(); addBad(); calculateAverage(); }}>
           bad
         </button>
       </div>
@@ -52,9 +68,13 @@ const App = () => {
       <div>good {good}</div>
       <div>neutral {neutral}</div>
       <div>bad {bad}</div>
+      <div>all {all}</div>
+      <div>average {(good-bad)/(good+bad+neutral)}</div>
+      <div>positive {(100*good)/(good+bad+neutral)} %</div>
       
     </div>
   )
 }
+
 
 export default App
