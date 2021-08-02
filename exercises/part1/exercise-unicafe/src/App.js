@@ -56,23 +56,24 @@ const Statistics = (props) => {
   else{
     console.log('Feedback has been given.')
     return (
-      <div>
+      <table><tbody>
         <StatisticLine text="good" value={props.good}/>
         <StatisticLine text="neutral" value={props.neutral}/>
         <StatisticLine text="bad" value={props.bad}/>
         <StatisticLine text="all" value={props.all} />
         <StatisticLine text="average" value={(props.good-props.bad)/(props.good+props.bad+props.neutral)} />
         <StatisticLine text="positive" value={(100*props.good)/(props.good+props.bad+props.neutral)} symbol={"%"}/>
-      </div>
+        </tbody></table>
     )
   }
 }
 
 const StatisticLine = (props) => {
   return (
-    <div>
-      {props.text} {props.value} {props.symbol}
-    </div>
+        <tr>
+          <td>{props.text}</td>
+          <td>{props.value} {props.symbol}</td>
+        </tr>  
   )
 }
 
