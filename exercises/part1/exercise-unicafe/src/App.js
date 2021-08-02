@@ -65,15 +65,25 @@ const App = () => {
 
       <h1>statistics</h1>
 
-      <div>good {good}</div>
-      <div>neutral {neutral}</div>
-      <div>bad {bad}</div>
-      <div>all {all}</div>
-      <div>average {(good-bad)/(good+bad+neutral)}</div>
-      <div>positive {(100*good)/(good+bad+neutral)} %</div>
+      <Statistics good={good} neutral={neutral} bad={bad} all={all}/>
       
     </div>
   )
+}
+
+const Statistics = (props) => {
+
+  return (
+    <div>
+      <div>good {props.good}</div>
+      <div>neutral {props.neutral}</div>
+      <div>bad {props.bad}</div>
+      <div>all {props.all}</div>
+      <div>average {(props.good-props.bad)/(props.good+props.bad+props.neutral)}</div>
+      <div>positive {(100*props.good)/(props.good+props.bad+props.neutral)} %</div>
+    </div>
+  )
+  
 }
 
 
