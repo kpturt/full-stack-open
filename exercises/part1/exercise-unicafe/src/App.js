@@ -7,8 +7,6 @@ const App = () => {
   const [bad, setBad] = useState(0)
   let all = good + neutral + bad
   let average = 0
-  let isEmpty = 0
-  
 
   const addGood = () => {
     console.log('added one good review')
@@ -38,15 +36,6 @@ const App = () => {
     console.log('average: ',average)
   }
 
-  //need to implement somehow
-  if((good||bad||neutral) === 0){
-    isEmpty = 0
-    console.log('no feedback given, isEmpty: ', isEmpty)
-  } else {
-    isEmpty = 1
-    console.log('feedback has been given, isEmpty: ', isEmpty)
-  }
-
   return (
     <div>
       <h1>give feedback</h1>
@@ -73,17 +62,27 @@ const App = () => {
 
 const Statistics = (props) => {
 
-  return (
-    <div>
-      <div>good {props.good}</div>
-      <div>neutral {props.neutral}</div>
-      <div>bad {props.bad}</div>
-      <div>all {props.all}</div>
-      <div>average {(props.good-props.bad)/(props.good+props.bad+props.neutral)}</div>
-      <div>positive {(100*props.good)/(props.good+props.bad+props.neutral)} %</div>
-    </div>
-  )
-  
+  if(props.good+props.neutral+props.bad === 0){
+    console.log('No feedback given.')
+    return (
+      <div>
+        <p>No feedback has been given</p>
+      </div>
+    )
+  }
+  else{
+    console.log('Feedback has been given.')
+    return (
+      <div>
+        <div>good {props.good}</div>
+        <div>neutral {props.neutral}</div>
+        <div>bad {props.bad}</div>
+        <div>all {props.all}</div>
+        <div>average {(props.good-props.bad)/(props.good+props.bad+props.neutral)}</div>
+        <div>positive {(100*props.good)/(props.good+props.bad+props.neutral)} %</div>
+      </div>
+    )
+  }
 }
 
 
