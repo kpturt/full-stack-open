@@ -11,32 +11,35 @@ const App = () => {
     '6 Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.'
   ]
    
-  const [selected, setSelected] = useState(anecdotes[Math.floor(Math.random()*anecdotes.length)])
+  const [rnd, setRnd] = useState(Math.floor(Math.random()*anecdotes.length))
+  const [selected, setSelected] = useState(anecdotes[rnd])
+  const [points, setPoints] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0})
   
-  //comes one step late?
-  const GenerateAnecdote = () => {
-    console.log('Number of anecdotes: ',anecdotes.length)
-    const rnd = Math.floor(Math.random()*anecdotes.length)
-    console.log('Random number selected: ', rnd)
-    setSelected(anecdotes[rnd])
-    console.log(selected)
+  const generateAnecdote = () => {
+    console.log('Generating new anecdote')
+    //console.log('Number of anecdotes: ', anecdotes.length)
+    const tmp = Math.floor(Math.random()*anecdotes.length)
+    setSelected(anecdotes[tmp])
+    setRnd(tmp)
+  }
+
+  const addVote = () => {
+    console.log('Adding vote')
+    const copy = {...points}
+    copy[rnd] += 1
+    setPoints(copy)
   }
 
   return (
     <div>
       <p>{selected}</p>
-      <Button handleClick={GenerateAnecdote} />
-      {console.log('------------------------------------')}
+      <p>{/*rnd*/} has {points[rnd]} votes</p>
+      <button onClick={addVote}>vote</button>
+      <button onClick={generateAnecdote}>new anecdote</button>
     </div>
   )
 }
 
-const Button = (props) => {
-  return (
-    <button  onClick={props.handleClick}>
-      Press me to generate a new anecdote!
-    </button>
-  )
-}
+
 
 export default App
