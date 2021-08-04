@@ -1,0 +1,83 @@
+import React from 'react'
+
+
+const App = () => {
+  const course = {
+    name: 'Half Stack application development',
+    id: 1,
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10,
+        id: 1
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7,
+        id: 2
+      },
+      {
+        name: 'State of a component',
+        exercises: 14,
+        id: 3
+      }
+    ]
+  }
+
+  return (
+    <div>
+      <Course course={course} />
+    </div>
+  )
+}
+
+const Course = (props) => {
+  return (
+    <div>
+      <Header name={props.course.name}/>
+      <Contents parts={props.course.parts}/>
+    </div>
+  )
+}
+
+//Header
+const Header = (props) => {
+  return (
+    <div>
+      <h1>{props.name}</h1>
+    </div>
+  )
+}
+
+//Contents
+const Contents = (props) => {
+  return (
+
+    //can cause trouble --> props.parts.map((part, i) => <Part name={part.name} exercises={part.exercises} key={i} />)
+    props.parts.map(part => <Part key={part.id} name={part.name} exercises={part.exercises} />)
+    
+    //this is hardcoded way of diplaying the courses
+    /*<div>
+      <Part name={props.parts[0].name} exercises={props.parts[0].exercises} />
+      <Part name={props.parts[1].name} exercises={props.parts[1].exercises} />
+      <Part name={props.parts[2].name} exercises={props.parts[2].exercises} />
+    </div>*/
+  )
+}
+
+const Part = (props) => {
+  return (
+    <div>
+      <p>{props.name} {props.exercises}</p>
+    </div>
+  )
+}
+
+//Total
+//const Total = (props) => {
+//  return (
+//    <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
+//  )
+//}
+
+export default App
