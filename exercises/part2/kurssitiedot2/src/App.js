@@ -20,6 +20,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
   }
@@ -36,11 +41,11 @@ const Course = (props) => {
     <div>
       <Header name={props.course.name}/>
       <Contents parts={props.course.parts}/>
+      <Total parts={props.course.parts} />
     </div>
   )
 }
 
-//Header
 const Header = (props) => {
   return (
     <div>
@@ -49,7 +54,6 @@ const Header = (props) => {
   )
 }
 
-//Contents
 const Contents = (props) => {
   return (
 
@@ -73,11 +77,15 @@ const Part = (props) => {
   )
 }
 
-//Total
-//const Total = (props) => {
-//  return (
-//    <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
-//  )
-//}
+const Total = (props) => {
+  return (
+    <p><b>total of{' '}
+      {props.parts.reduce(
+        (prev, current) => prev + current.exercises, 0)
+      } exercises </b></p>
+    //this is hardcoded way of diplaying the total
+    //<p><b>total of {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises + props.parts[3].exercises} exercises </b></p>
+  )
+}
 
 export default App
