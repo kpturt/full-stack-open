@@ -9,22 +9,28 @@ const App = () => {
 
   /*renders to console what is written, sets the written name as a newName*/
   const handleNameChange = (event) => {
-    console.log('handling name change: ', event.target.value)
+    //console.log('handling name change: ', event.target.value)
     setNewName(event.target.value)
   }
 
   /*adds the new name to the persons list*/
   const addName = (event) => {
     event.preventDefault() //prevents the page from reloading after adding name
-    console.log('adding name: ', event.target.value)
-    const nameObject = {
-      name: newName,
-      id: persons.length+1
+    console.log('adding new name: ', newName)
+
+    if(persons.some(person => person.name === newName)){
+      console.log('duplicate name, sending alert')
+      window.alert(`${newName} is already in your phonebook`)
+    } else {
+      const nameObject = {
+        name: newName,
+        id: persons.length+1
+      }
+      console.log('nameObject: ', nameObject)
+      setPersons(persons.concat(nameObject))
+      setNewName('')
     }
-    console.log('nameObject: ', nameObject)
-    setPersons(persons.concat(nameObject))
-    setNewName('')
-    console.log('New persons list: ', persons)
+    
   }
 
   return (
