@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import AddPersonForm from './AddPersonForm'
+import Filter from './Filter'
+import Numbers from './Numbers'
 
 const App = () => {
   const [ persons, setPersons] = useState([
@@ -8,12 +11,9 @@ const App = () => {
     { name: 'Alpo Aunas', number: '0400-445-333', id: 4 },
     { name: 'Alpi Alias', number: '0400-335-345', id: 5 }
   ]) 
-  const [newName, setNewName ] = useState('a new name')
-  const [newNumber, setNewNumber] = useState('a new number')
+  const [newName, setNewName ] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   const [filterBar, setFilterBar] = useState('')
-
-  /*need to come up with a solution for a better search*/
-  const numbersToShow = persons.filter(person => person.name.toLowerCase().indexOf(filterBar) === 0 || person.name.toUpperCase().indexOf(filterBar) === 0 || person.name.indexOf(filterBar) === 0)
 
   /*renders to console what is written, sets the written name as a new value for the variable*/
   const handleNameChange = (event) => {
@@ -39,7 +39,7 @@ const App = () => {
     //checks duplicate names or numbers
     else if(persons.some(person => person.name === newName) || persons.some(person => person.number === newNumber)){
       console.log('duplicate name, sending alert')
-      window.alert(`${newName} is already in your phonebook`)
+      window.alert(`A person called ${newName} or the number ${newNumber} is already in your phonebook`)
     }
     else {
       const nameObject = {
@@ -57,27 +57,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-
-      <div>
-        search contacts: <input value={filterBar} onChange={handleFilterBar}></input>
-      </div>
-      
-      <h2>Numbers</h2>
-      <ul>
-        {numbersToShow.map(person => <li key={person.id}> {person.name} {person.number}</li>)}
-      </ul>
+      <AddPersonForm onSubmit={addName} name={newName} onNameChange={handleNameChange} number={newNumber} onNumberChange={handleNumberChange}/>
+      <Filter value={filterBar} onChange={handleFilterBar}/>
+      <Numbers persons={persons} filterBar={filterBar}/>
     </div>
   )
 }
