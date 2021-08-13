@@ -1,19 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddPersonForm from './AddPersonForm'
 import Filter from './Filter'
 import Numbers from './Numbers'
+import axios from 'axios'
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Uljas', number: '0400-123-322', id: 1 },
-    { name: 'Heijo Alias', number: '0400-345-643', id: 2 },
-    { name: 'Urpo Helias', number: '0400-456-423', id: 3 },
-    { name: 'Alpo Aunas', number: '0400-445-333', id: 4 },
-    { name: 'Alpi Alias', number: '0400-335-345', id: 5 }
-  ]) 
+  const [ persons, setPersons] = useState([]) 
   const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterBar, setFilterBar] = useState('')
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }, [])
+  console.log('render', persons.length, 'persons')
 
   /*renders to console what is written, sets the written name as a new value for the variable*/
   const handleNameChange = (event) => {
