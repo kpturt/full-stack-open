@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import AddPersonForm from './AddPersonForm'
 import Filter from './Filter'
 import Numbers from './Numbers'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
@@ -12,14 +12,14 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
+    personService
+      .getAll()
+      .then(initialPersons => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(initialPersons)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
+  
 
   /*renders to console what is written, sets the written name as a new value for the variable*/
   const handleNameChange = (event) => {
@@ -51,12 +51,27 @@ const App = () => {
       const nameObject = {
         name: newName,
         number: newNumber,
-        id: persons.length+1
+        id: persons.length+1 //should rather be handled by server
       }
       console.log('nameObject: ', nameObject)
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
+
+      /*
+      personService
+        .create(nameObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        })
+      */
+      
+      personService
+        .create(nameObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
     }
   }
 
