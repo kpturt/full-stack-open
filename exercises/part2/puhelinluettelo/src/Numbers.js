@@ -12,7 +12,12 @@ const Numbers = (props) => {
     return (
         <div>
             <h2>Numbers</h2>
-            <ul>{numbersToShow.map(person => <li key={person.id}> {person.name} {person.number}</li>)}</ul>
+            <ul>
+                {numbersToShow.map(person => 
+                <li key={person.id}> {person.name} {person.number} 
+                    {<button type="delete" onClick={props.onClick} id={person.id} >delete</button>}
+                </li>)}
+            </ul>
         </div>
     )
 }
