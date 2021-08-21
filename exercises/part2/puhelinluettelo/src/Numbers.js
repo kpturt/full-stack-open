@@ -14,7 +14,7 @@ const Numbers = (props) => {
             <h2>Numbers</h2>
             <ul>
                 {numbersToShow.map(person => 
-                <li key={person.id}> {person.name} {person.number} 
+                <li key={person.id}> {person?.name} {person.number} 
                     {<button type="delete" onClick={props.onClick} id={person.id} >delete</button>}
                 </li>)}
             </ul>

@@ -36,36 +36,39 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault() //prevents the page from reloading after adding name
     console.log('adding new name: ', newName, 'number: ', newNumber)
+    const nameObject = {
+      name: newName,
+      number: newNumber
+      //is and should rather be handled by server, id bugs with deletions and needs a fix
+      //id: persons.length+1
+    }
     
     //checks empty fields
     if(newName.length === 0 || newNumber.length === 0) {
       console.log('empty name, sending alert')
       window.alert('your contact is missing either a name or a number')
     }
-    //checks duplicate names or numbers
-    else if(persons.some(person => person.name === newName) || persons.some(person => person.number === newNumber)){
+    /**
+     * checks duplicate names
+     * duplicate numbers: || persons.some(person => person.number === newNumber)
+     * duplicate numbers creates a bug with oldID
+     */
+    else if(persons.some(person => person.name === newName)){
       console.log('duplicate name, sending alert')
-      window.alert(`A person called ${newName} or the number ${newNumber} is already in your phonebook`)
-    }
-    else {
-      const nameObject = {
-        name: newName,
-        number: newNumber
-        //is and should rather be handled by server, id bugs with deletions and needs a fix
-        //id: persons.length+1
-      }
-      console.log('nameObject: ', nameObject)
-
-      /*
-      personService
-        .create(nameObject)
+      if(window.confirm(`A person called ${newName} or the number ${newNumber} is already in your phonebook. Do you want to replace this person's number?`)){
+        const oldID = persons.find(person => person.name === newName).id
+        console.log('oldID: ', oldID)
+        personService
+        .update(nameObject, oldID)
         .then(response => {
-          setPersons(persons.concat(response.data))
+          setPersons(persons.map(person => person.id !== oldID ? person : response))
           setNewName('')
           setNewNumber('')
         })
-      */
-      
+      }
+    }
+    else {
+      console.log('nameObject: ', nameObject)
       personService
         .create(nameObject)
         .then(returnedPerson => {
