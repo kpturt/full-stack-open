@@ -3,12 +3,14 @@ import AddPersonForm from './AddPersonForm'
 import Filter from './Filter'
 import Numbers from './Numbers'
 import personService from './services/persons'
+import './index.css'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterBar, setFilterBar] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -19,6 +21,17 @@ const App = () => {
         setPersons(initialPersons)
       })
   }, [])
+
+  const Notification = ({message}) => {
+    if(message === null){
+      return null
+    }
+    return(
+      <div className="error">
+        {message}
+      </div>
+    )
+  }
 
   /*renders to console what is written, sets the written name as a new value for the variable*/
   const handleNameChange = (event) => {
@@ -64,6 +77,13 @@ const App = () => {
           setPersons(persons.map(person => person.id !== oldID ? person : response))
           setNewName('')
           setNewNumber('')
+          //notification
+          setNotificationMessage(
+            `${nameObject.name}'s number changed in phonebook.`
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
       }
     }
@@ -75,12 +95,28 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          //notification
+          setNotificationMessage(
+            `${nameObject.name} added to phonebook.`
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
     }
   }
 
   const deleteName = (event) => {
     event.preventDefault()
+    console.log('deleting name')
+    console.log('event id: ', event.target.id)
+    console.log('person id: ', persons.find(person => person.id == event.target.id).id)
+    const namm = {
+      name: persons.find(person => person.id == event.target.id).name,
+      number: persons.find(person => person.id == event.target.id).number,
+      id: persons.find(person => person.id == event.target.id).id
+    }
+    console.log('NAMM', namm)
     if(window.confirm(`Remove id: ${event.target.id} ?`)){
       console.log('deleting name: ', event.target.id)
       personService
@@ -89,12 +125,20 @@ const App = () => {
         console.log('event.target.id: ', event.target.id, 'response: ', response)
         console.log('persons return filter: ', persons.filter(persons => persons.id != event.target.id))
         setPersons(persons.filter(person => person.id != event.target.id))
+        //notification
+        setNotificationMessage(
+          `${persons.find(person => person.id == event.target.id).name} deleted from phonebook.`
+        )
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
     }
   }
 
   return (
     <div>
+      <Notification message={notificationMessage} />
       <h2>Phonebook</h2>
       <AddPersonForm onSubmit={addName} name={newName} onNameChange={handleNameChange} number={newNumber} onNumberChange={handleNumberChange}/>
       <Filter value={filterBar} onChange={handleFilterBar}/>
