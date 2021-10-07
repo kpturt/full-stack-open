@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterBar, setFilterBar] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
+  const [errorClass, setErrorClass] = useState()
 
   useEffect(() => {
     console.log('effect')
@@ -22,12 +23,13 @@ const App = () => {
       })
   }, [])
 
+  /*render notification bar, changes the error color according to the message*/
   const Notification = ({message}) => {
     if(message === null){
       return null
     }
     return(
-      <div className="error">
+      <div className = {errorClass}>
         {message}
       </div>
     )
@@ -78,6 +80,7 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           //notification
+          setErrorClass('success')
           setNotificationMessage(
             `${nameObject.name}'s number changed in phonebook.`
           )
@@ -96,6 +99,7 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           //notification
+          setErrorClass('success')
           setNotificationMessage(
             `${nameObject.name} added to phonebook.`
           )
@@ -126,6 +130,7 @@ const App = () => {
         console.log('persons return filter: ', persons.filter(persons => persons.id != event.target.id))
         setPersons(persons.filter(person => person.id != event.target.id))
         //notification
+        setErrorClass('error')
         setNotificationMessage(
           `${persons.find(person => person.id == event.target.id).name} deleted from phonebook.`
         )
@@ -133,12 +138,23 @@ const App = () => {
           setNotificationMessage(null)
         }, 5000)
       })
+      .catch(error => {
+        //setErrorMessage(error);
+        //alert('Error')
+        setErrorClass('error')
+        setNotificationMessage(
+          `${persons.find(person => person.id == event.target.id).name} has already been deleted.`
+        )
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+      });
     }
   }
 
   return (
     <div>
-      <Notification message={notificationMessage} />
+      <Notification message={notificationMessage} color={errorClass}/>
       <h2>Phonebook</h2>
       <AddPersonForm onSubmit={addName} name={newName} onNameChange={handleNameChange} number={newNumber} onNumberChange={handleNumberChange}/>
       <Filter value={filterBar} onChange={handleFilterBar}/>
