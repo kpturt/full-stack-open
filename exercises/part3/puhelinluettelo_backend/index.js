@@ -64,15 +64,36 @@ const generateID = () => {
     console.log("generated id: ", id)
     return id
 }
+
 app.post('/api/persons', (req, res) => {
     const body = req.body
     console.log("req.body: ", body)
 
-    if(!body.name || !body.number) {
+    if(!body.name) {
         return res.status(400).json({
-            error: 'missing content'
+            error: 'missing name'
         })
     }
+    if(!body.number) {
+        return res.status(400).json({
+            error: 'missing number'
+        })
+    }
+    console.log('filter name: ', persons.find(person => person.name === body.name))
+    console.log('filter number: ', persons.find(person => person.number === body.number))
+    if(persons.find(person => person.name === body.name)){
+        console.log('name already in phonebook')
+        return res.status(400).json({
+            error: 'name already in phonebook'
+        })
+    }
+    if(persons.find(person => person.number === body.number)){
+        console.log('number already in phonebook')
+        return res.status(400).json({
+            error: 'number already in phonebook'
+        })
+    }
+    
     const person = {
         id: generateID(),
         name: body.name,
