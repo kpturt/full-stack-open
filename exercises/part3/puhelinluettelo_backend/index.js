@@ -1,5 +1,6 @@
 console.log('>server starting...')
 
+const { response } = require('express')
 const express = require('express')
 const app = express()
 
@@ -30,16 +31,33 @@ app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/api/persons', (req, res) => {
-    res.json(persons)
-})
-
 app.get('/info', (req, res) => {
     const count = persons.filter(person => person.id > 0).length
     let date = new Date()
     const info = (`<div>Phonebook has info for ${count} people.</div><div>${date}</div>`)
     res.send(info)
 })
+
+app.get('/api/persons', (req, res) => {
+    res.json(persons)
+})
+
+app.get('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const person = persons.find(person => person.id === id)
+    if(person){
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
+})
+
+/* Debugging types
+const person = persons.find(person => {
+        console.log(person.id, typeof person.id, id, typeof id, person.id === id)
+        return person.id === id
+    })
+*/
 
 const PORT = 3001
 app.listen(PORT, () => {
