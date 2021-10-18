@@ -48,16 +48,15 @@ app.get('/api/persons/:id', (req, res) => {
     if(person){
         res.json(person)
     } else {
-        res.status(404).end()
+        res.status(404).end() //not found
     }
 })
 
-/* Debugging types
-const person = persons.find(person => {
-        console.log(person.id, typeof person.id, id, typeof id, person.id === id)
-        return person.id === id
-    })
-*/
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    persons = persons.filter(person => person.id !== id)
+    res.status(204).end() //no content
+})
 
 const PORT = 3001
 app.listen(PORT, () => {
