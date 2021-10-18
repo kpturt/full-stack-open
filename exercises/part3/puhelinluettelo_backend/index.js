@@ -3,6 +3,7 @@ console.log('>server starting...')
 const { response } = require('express')
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let persons = [
     {
@@ -56,6 +57,30 @@ app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     persons = persons.filter(person => person.id !== id)
     res.status(204).end() //no content
+})
+
+const generateID = () => {
+    const id = Math.floor(Math.random()*997+4) //returns random number from 5 to 1000
+    console.log("generated id: ", id)
+    return id
+}
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    console.log("req.body: ", body)
+
+    if(!body.name || !body.number) {
+        return res.status(400).json({
+            error: 'missing content'
+        })
+    }
+    const person = {
+        id: generateID(),
+        name: body.name,
+        number: body.number
+    }
+
+    persons = persons.concat(person)
+    res.json(person)
 })
 
 const PORT = 3001
