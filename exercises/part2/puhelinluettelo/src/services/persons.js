@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+//const baseUrl = 'http://localhost:3001/api/persons'
+const baseUrl = '/api/persons' //because build is copied to backend and they are in the same location, relative path
 
 const getAll = () => {
     console.log('personsService getAll')
