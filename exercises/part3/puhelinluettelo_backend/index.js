@@ -2,10 +2,12 @@ console.log('>server starting...')
 
 const { response } = require('express')
 const express = require('express')
+const cors = require('cors')
 var morgan = require('morgan')
 const app = express()
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body')) //morgan logging output formatting, tiny & body
+app.use(cors())
 
 let persons = [
     {
@@ -27,6 +29,11 @@ let persons = [
         id: 4,
         name: "Mary Poppendick",
         number: "39-23-6423122"
+    },
+    {
+        id: 5,
+        name: "dbserver",
+        number: "321"
     }
 ]
 
@@ -56,6 +63,7 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
+    const body = req.body
     const id = Number(req.params.id)
     persons = persons.filter(person => person.id !== id)
     res.status(204).end() //no content
@@ -66,6 +74,11 @@ const generateID = () => {
     console.log("generated id: ", id)
     return id
 }
+
+//if used inside post function, causes nodemon crashing?
+morgan.token('body', (req, res) => {
+    return JSON.stringify(req.body) //creates a string of content body to be used in morgan logging
+}) 
 
 app.post('/api/persons', (req, res) => {
     const body = req.body
@@ -103,7 +116,8 @@ app.post('/api/persons', (req, res) => {
     }
     
     persons = persons.concat(person)
-    morgan.token('body', (req, res) => JSON.stringify(req.body)) //creates a string of content body to be used in morgan logging
+    
+    //morgan.token('body', function (req, res) {return JSON.stringify(req.body)} )
     res.json(person)
 })
 
